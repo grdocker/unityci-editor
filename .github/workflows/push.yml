@@ -4,13 +4,17 @@ on:
     branches: [main]
 jobs:
   build_image:
+    strategy:
+      matrix:
+        unity_version:
+          - "2021.2.16f1"
     runs-on: ubuntu-latest
     steps:
       - name: Produce image tag
         id: tag
         run: |
           repo="${{ github.repository }}"
-          tag="${repo/${{ github.repository_owner }}/grascm}"
+          tag="${repo/${{ github.repository_owner }}/grascm}:${{ matrix.unity_version }}"
           echo $tag
           echo "::set-output name=res::$tag"
       - name: Login to DockerHub
@@ -21,5 +25,7 @@ jobs:
       - name: Build docker image
         uses: docker/build-push-action@v2.3.0
         with:
+          build-args: |
+            UNITY_VERSION=${{ matrix.unity_version }}
           push: true
           tags: ${{ steps.tag.outputs.res }}

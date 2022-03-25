@@ -1,3 +1,3 @@
-# template
+# unityci-editor
 
-This repository contains basic files needed to setup new image repository with tests and auto uploads
+Image contains unity editor with libsaxonb-java to convert test results into junit format
